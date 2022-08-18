@@ -1,0 +1,464 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "CampusOnline Webservices",
+        "contact": {
+            "name": "Joscha Henningsen",
+            "url": "https://joschas.page"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/v1/course": {
+            "get": {
+                "description": "This endpoint returns all information about a course, e.g. its title, description, semester, contacts and more.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "course"
+                ],
+                "summary": "export course information.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "courseID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "DE or EN, optional",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Course",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Course"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/course/students": {
+            "get": {
+                "description": "This endpoint returns a list containing all students enrolled in a course.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "course"
+                ],
+                "summary": "list enrolled students for course.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "courseID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "DE or EN, optional",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Students",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/routes.Person"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "routes.Course": {
+            "type": "object",
+            "properties": {
+                "admission_info": {
+                    "type": "object",
+                    "properties": {
+                        "admission_description": {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "user_defined": {
+                                    "type": "string"
+                                },
+                                "web_link": {
+                                    "$ref": "#/definitions/routes.WebLink"
+                                }
+                            }
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "contacts": {
+                    "type": "object",
+                    "properties": {
+                        "person": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/routes.Person"
+                            }
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "course_code": {
+                    "type": "string"
+                },
+                "course_description": {
+                    "type": "string"
+                },
+                "course_id": {
+                    "type": "string"
+                },
+                "course_name": {
+                    "type": "object",
+                    "properties": {
+                        "chardata": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "credits": {
+                    "type": "object",
+                    "properties": {
+                        "hours_per_week": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "exam": {
+                    "type": "object",
+                    "properties": {
+                        "info_block": {
+                            "$ref": "#/definitions/routes.InfoBlock"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "form_of_assessment": {
+                    "type": "string"
+                },
+                "form_of_teaching": {
+                    "type": "string"
+                },
+                "instruction_language": {
+                    "type": "object",
+                    "properties": {
+                        "teaching_lang": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "language": {
+                    "type": "string"
+                },
+                "learning_objectives": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string"
+                        },
+                        "web_link": {
+                            "$ref": "#/definitions/routes.WebLink"
+                        }
+                    }
+                },
+                "syllabus": {
+                    "type": "string"
+                },
+                "teaching_activity": {
+                    "type": "object",
+                    "properties": {
+                        "info_block": {
+                            "$ref": "#/definitions/routes.InfoBlock"
+                        },
+                        "teaching_activity_id": {
+                            "type": "string"
+                        },
+                        "teaching_activity_name": {
+                            "type": "object",
+                            "properties": {
+                                "chardata": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "teaching_term": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "type_id": {
+                    "type": "string"
+                },
+                "type_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "routes.Error": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "routes.InfoBlock": {
+            "type": "object",
+            "properties": {
+                "picture": {
+                    "$ref": "#/definitions/routes.Picture"
+                },
+                "sub_block": {
+                    "type": "object",
+                    "properties": {
+                        "sub_block": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        },
+                        "user_defined": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "text": {
+                    "type": "string"
+                },
+                "web_link": {
+                    "$ref": "#/definitions/routes.WebLink"
+                }
+            }
+        },
+        "routes.Person": {
+            "type": "object",
+            "properties": {
+                "contact_data": {
+                    "type": "object",
+                    "properties": {
+                        "adr": {
+                            "type": "object",
+                            "properties": {
+                                "country": {
+                                    "type": "string"
+                                },
+                                "extadr": {
+                                    "type": "string"
+                                },
+                                "locality": {
+                                    "type": "string"
+                                },
+                                "pcode": {
+                                    "type": "string"
+                                },
+                                "street": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "contact_name": {
+                            "type": "object",
+                            "properties": {
+                                "chardata": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "telephone": {
+                            "type": "object",
+                            "properties": {
+                                "teltype": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "text": {
+                            "type": "string"
+                        },
+                        "web_link": {
+                            "$ref": "#/definitions/routes.WebLink"
+                        }
+                    }
+                },
+                "ident": {
+                    "type": "string"
+                },
+                "info_block": {
+                    "$ref": "#/definitions/routes.InfoBlock"
+                },
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "family": {
+                            "type": "string"
+                        },
+                        "given": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "person_id": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "object",
+                    "properties": {
+                        "chardata": {
+                            "type": "string"
+                        },
+                        "role_id": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "text": {
+                    "type": "string"
+                }
+            }
+        },
+        "routes.Picture": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "web_link": {
+                    "type": "object",
+                    "properties": {
+                        "href": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        },
+                        "user_defined": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "routes.WebLink": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "user_defined": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

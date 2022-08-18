@@ -1,0 +1,301 @@
+definitions:
+  routes.Course:
+    properties:
+      admission_info:
+        properties:
+          admission_description:
+            properties:
+              text:
+                type: string
+              user_defined:
+                type: string
+              web_link:
+                $ref: '#/definitions/routes.WebLink'
+            type: object
+          text:
+            type: string
+        type: object
+      contacts:
+        properties:
+          person:
+            items:
+              $ref: '#/definitions/routes.Person'
+            type: array
+          text:
+            type: string
+        type: object
+      course_code:
+        type: string
+      course_description:
+        type: string
+      course_id:
+        type: string
+      course_name:
+        properties:
+          chardata:
+            type: string
+          text:
+            type: string
+        type: object
+      credits:
+        properties:
+          hours_per_week:
+            type: string
+          text:
+            type: string
+        type: object
+      exam:
+        properties:
+          info_block:
+            $ref: '#/definitions/routes.InfoBlock'
+          text:
+            type: string
+        type: object
+      form_of_assessment:
+        type: string
+      form_of_teaching:
+        type: string
+      instruction_language:
+        properties:
+          teaching_lang:
+            type: string
+          text:
+            type: string
+        type: object
+      language:
+        type: string
+      learning_objectives:
+        type: string
+      level:
+        properties:
+          text:
+            type: string
+          web_link:
+            $ref: '#/definitions/routes.WebLink'
+        type: object
+      syllabus:
+        type: string
+      teaching_activity:
+        properties:
+          info_block:
+            $ref: '#/definitions/routes.InfoBlock'
+          teaching_activity_id:
+            type: string
+          teaching_activity_name:
+            properties:
+              chardata:
+                type: string
+              text:
+                type: string
+            type: object
+          text:
+            type: string
+        type: object
+      teaching_term:
+        type: string
+      text:
+        type: string
+      type_id:
+        type: string
+      type_name:
+        type: string
+    type: object
+  routes.Error:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  routes.InfoBlock:
+    properties:
+      picture:
+        $ref: '#/definitions/routes.Picture'
+      sub_block:
+        properties:
+          sub_block:
+            type: string
+          text:
+            type: string
+          user_defined:
+            type: string
+        type: object
+      text:
+        type: string
+      web_link:
+        $ref: '#/definitions/routes.WebLink'
+    type: object
+  routes.Person:
+    properties:
+      contact_data:
+        properties:
+          adr:
+            properties:
+              country:
+                type: string
+              extadr:
+                type: string
+              locality:
+                type: string
+              pcode:
+                type: string
+              street:
+                type: string
+              text:
+                type: string
+            type: object
+          contact_name:
+            properties:
+              chardata:
+                type: string
+              text:
+                type: string
+            type: object
+          email:
+            type: string
+          telephone:
+            properties:
+              teltype:
+                type: string
+              text:
+                type: string
+            type: object
+          text:
+            type: string
+          web_link:
+            $ref: '#/definitions/routes.WebLink'
+        type: object
+      ident:
+        type: string
+      info_block:
+        $ref: '#/definitions/routes.InfoBlock'
+      name:
+        properties:
+          family:
+            type: string
+          given:
+            type: string
+          text:
+            type: string
+        type: object
+      person_id:
+        type: string
+      role:
+        properties:
+          chardata:
+            type: string
+          role_id:
+            type: string
+          text:
+            type: string
+        type: object
+      text:
+        type: string
+    type: object
+  routes.Picture:
+    properties:
+      text:
+        type: string
+      web_link:
+        properties:
+          href:
+            type: string
+          text:
+            type: string
+          user_defined:
+            type: string
+        type: object
+    type: object
+  routes.WebLink:
+    properties:
+      href:
+        type: string
+      text:
+        type: string
+      user_defined:
+        type: string
+    type: object
+info:
+  contact:
+    name: Joscha Henningsen
+    url: https://joschas.page
+  title: CampusOnline Webservices
+  version: "1.0"
+paths:
+  /api/v1/course:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns all information about a course, e.g. its
+        title, description, semester, contacts and more.
+      parameters:
+      - in: query
+        name: courseID
+        type: string
+      - description: DE or EN, optional
+        in: query
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Course
+          schema:
+            $ref: '#/definitions/routes.Course'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.Error'
+      summary: export course information.
+      tags:
+      - course
+  /api/v1/course/students:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns a list containing all students enrolled in
+        a course.
+      parameters:
+      - in: query
+        name: courseID
+        type: string
+      - description: DE or EN, optional
+        in: query
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Students
+          schema:
+            items:
+              $ref: '#/definitions/routes.Person'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.Error'
+      summary: list enrolled students for course.
+      tags:
+      - course
+swagger: "2.0"
