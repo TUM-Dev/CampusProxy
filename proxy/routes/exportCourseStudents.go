@@ -22,8 +22,9 @@ type exportCourseStudentsRequest struct {
 // @Accept json,xml
 // @Param SearchRequest query exportCourseStudentsRequest true "request"
 // @Produce json
-// @Router /api/v1/course/students [get]
+// @Router /course/students [get]
 // @Tags course
+// @Security ApiKeyAuth
 func ExportCourseStudents(c *gin.Context) {
 	var req exportCourseStudentsRequest
 	err := c.Bind(&req)

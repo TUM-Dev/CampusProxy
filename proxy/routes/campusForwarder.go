@@ -13,6 +13,8 @@ const baseURL = "https://campus.tum.de"
 var routeMaps = map[string]string{
 	"/api/v1/course":          "/tumonlinej/ws/webservice_v1.0/cdm/course/xml",
 	"/api/v1/course/students": "/tumonlinej/ws/webservice_v1.0/cdm/course/students/xml",
+	"/api/v1/course/events":   "/tumonlinej/ws/webservice_v1.0/rdm/course/events/xml",
+	"/api/v1/organization":    "/tumonlinej/ws/webservice_v1.0/cdm/organization/xml",
 }
 
 func campusForward(c *gin.Context, req any) *http.Response {

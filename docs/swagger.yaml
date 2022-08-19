@@ -1,4 +1,76 @@
+basePath: /api/v1
 definitions:
+  routes.Address:
+    properties:
+      contactName:
+        example: Immobilien (ZA 4)
+        type: string
+      country:
+        example: Deutschland
+        type: string
+      floor:
+        example: 1.Obergeschoß
+        type: string
+      locality:
+        example: Garching b. München
+        type: string
+      pCode:
+        example: "85748"
+        type: string
+      region:
+        example: Bayern
+        type: string
+      roomAdditionalData:
+        example: 101, Hörsaal 1, "Interims I"
+        type: string
+      roomCode:
+        example: 5620.01.101
+        type: string
+      roomID:
+        example: 62015
+        type: integer
+      street:
+        example: Boltzmannstr.    5
+        type: string
+    type: object
+  routes.ContactData:
+    properties:
+      adr:
+        properties:
+          country:
+            type: string
+          extadr:
+            type: string
+          locality:
+            type: string
+          pcode:
+            type: string
+          street:
+            type: string
+          text:
+            type: string
+        type: object
+      contact_name:
+        properties:
+          chardata:
+            type: string
+          text:
+            type: string
+        type: object
+      email:
+        type: string
+      telephone:
+        properties:
+          teltype:
+            type: string
+          text:
+            type: string
+        type: object
+      text:
+        type: string
+      web_link:
+        $ref: '#/definitions/routes.WebLink'
+    type: object
   routes.Course:
     properties:
       admission_info:
@@ -125,46 +197,56 @@ definitions:
       web_link:
         $ref: '#/definitions/routes.WebLink'
     type: object
+  routes.OrgUnit:
+    properties:
+      contacts:
+        properties:
+          contactData:
+            $ref: '#/definitions/routes.ContactData'
+          text:
+            description: e.g. "Lehrstuhl", "Arbeitsgruppe", "Ausschuss", ...
+            type: string
+        type: object
+      infoBlock:
+        $ref: '#/definitions/routes.InfoBlock'
+      orgUnitCode:
+        type: string
+      orgUnitID:
+        type: string
+      orgUnitKind:
+        properties:
+          subBlock:
+            items:
+              properties:
+                text:
+                  description: e.g. "Lehrstuhl", "Arbeitsgruppe", "Ausschuss", ...
+                  type: string
+                userDefined:
+                  description: always "name"
+                  type: string
+              type: object
+            type: array
+          text:
+            type: string
+        type: object
+      orgUnitName:
+        properties:
+          chardata:
+            type: string
+          text:
+            type: string
+        type: object
+      orgUnits:
+        items:
+          $ref: '#/definitions/routes.OrgUnit'
+        type: array
+      text:
+        type: string
+    type: object
   routes.Person:
     properties:
       contact_data:
-        properties:
-          adr:
-            properties:
-              country:
-                type: string
-              extadr:
-                type: string
-              locality:
-                type: string
-              pcode:
-                type: string
-              street:
-                type: string
-              text:
-                type: string
-            type: object
-          contact_name:
-            properties:
-              chardata:
-                type: string
-              text:
-                type: string
-            type: object
-          email:
-            type: string
-          telephone:
-            properties:
-              teltype:
-                type: string
-              text:
-                type: string
-            type: object
-          text:
-            type: string
-          web_link:
-            $ref: '#/definitions/routes.WebLink'
-        type: object
+        $ref: '#/definitions/routes.ContactData'
       ident:
         type: string
       info_block:
@@ -206,6 +288,50 @@ definitions:
             type: string
         type: object
     type: object
+  routes.SingleEvent:
+    properties:
+      address:
+        $ref: '#/definitions/routes.Address'
+      comment:
+        example: Videoübertragung aus MW 0001
+        type: string
+      dtend:
+        example: "2020-12-02T14:00:00Z"
+        type: string
+      dtstamp:
+        example: "2020-03-20T10:15:50Z"
+        type: string
+      dtstart:
+        example: "2020-12-02T13:00:00Z"
+        type: string
+      duration:
+        example: PT01H00M
+        type: string
+      groupID:
+        example: 850243
+        type: integer
+      groupName:
+        example: Standardgruppe
+        type: string
+      recurringID:
+        example: "431418"
+        type: string
+      singleEventID:
+        example: 888021023
+        type: integer
+      singleEventTypeID:
+        example: A
+        type: string
+      singleEventTypeName:
+        example: Abhaltung
+        type: string
+      status:
+        example: gelöscht
+        type: string
+      statusID:
+        example: FG
+        type: string
+    type: object
   routes.WebLink:
     properties:
       href:
@@ -215,14 +341,17 @@ definitions:
       user_defined:
         type: string
     type: object
+host: localhost:8020
 info:
   contact:
     name: Joscha Henningsen
     url: https://joschas.page
-  title: CampusOnline Webservices
+  description: This is the proxy server for CAMPUSOnline Webservices, enabling a nicely
+    documented and uniform rest access to CAMPUSOnline resources.
+  title: CAMPUSOnline Webservice proxy
   version: "1.0"
 paths:
-  /api/v1/course:
+  /course:
     get:
       consumes:
       - application/json
@@ -256,10 +385,48 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/routes.Error'
+      security:
+      - ApiKeyAuth: []
       summary: export course information.
       tags:
       - course
-  /api/v1/course/students:
+  /course/events:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns a list containing all events of a course.
+      parameters:
+      - in: query
+        name: courseID
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Events
+          schema:
+            items:
+              $ref: '#/definitions/routes.SingleEvent'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: list events for course.
+      tags:
+      - course
+  /course/students:
     get:
       consumes:
       - application/json
@@ -295,7 +462,56 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/routes.Error'
+      security:
+      - ApiKeyAuth: []
       summary: list enrolled students for course.
       tags:
       - course
+  /organization:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns all information about an organization and
+        its sub-organization.
+      parameters:
+      - description: DE or EN, optional
+        in: query
+        name: language
+        type: string
+      - in: query
+        name: orgUnitID
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Organization
+          schema:
+            $ref: '#/definitions/routes.OrgUnit'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: export an organization.
+      tags:
+      - organization
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-api-key
+    type: apiKey
 swagger: "2.0"

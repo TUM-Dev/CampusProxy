@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -24,9 +25,11 @@ type exportCourseRequest struct {
 // @Accept json,xml
 // @Param SearchRequest query exportCourseRequest true "request"
 // @Produce json
-// @Router /api/v1/course [get]
+// @Router /course [get]
 // @Tags course
+// @Security ApiKeyAuth
 func ExportCourse(c *gin.Context) {
+	fmt.Println("ExportCourse")
 	var req exportCourseRequest
 	err := c.Bind(&req)
 	if err != nil {
@@ -81,6 +84,28 @@ type InfoBlock struct {
 	Picture *Picture `xml:"picture" json:"picture"`
 }
 
+type ContactData struct {
+	Text        XmlText `xml:",chardata" json:"text,omitempty"`
+	ContactName *struct {
+		Chardata string  `xml:",chardata" json:"chardata,omitempty"`
+		Text     XmlText `xml:"text" json:"text,omitempty"`
+	} `xml:"contactName" json:"contact_name"`
+	Adr *struct {
+		Text     XmlText `xml:",chardata" json:"text,omitempty"`
+		Extadr   string  `xml:"extadr" json:"extadr,omitempty"`
+		Street   string  `xml:"street" json:"street,omitempty"`
+		Locality string  `xml:"locality" json:"locality,omitempty"`
+		Pcode    string  `xml:"pcode" json:"pcode,omitempty"`
+		Country  string  `xml:"country" json:"country,omitempty"`
+	} `xml:"adr" json:"adr"`
+	Email     string `xml:"email" json:"email,omitempty"`
+	Telephone *struct {
+		Text    XmlText `xml:",chardata" json:"text,omitempty"`
+		Teltype string  `xml:"teltype,attr" json:"teltype,omitempty"`
+	} `xml:"telephone" json:"telephone"`
+	WebLink *WebLink `xml:"webLink" json:"web_link"`
+}
+
 type Person struct {
 	Text     XmlText `xml:",chardata" json:"text,omitempty"`
 	Ident    string  `xml:"ident,attr"`
@@ -95,28 +120,8 @@ type Person struct {
 		RoleID   string  `xml:"roleID,attr" json:"role_id,omitempty"`
 		Text     XmlText `xml:"text" json:"text,omitempty"`
 	} `xml:"role" json:"role"`
-	ContactData struct {
-		Text        XmlText `xml:",chardata" json:"text,omitempty"`
-		ContactName *struct {
-			Chardata string  `xml:",chardata" json:"chardata,omitempty"`
-			Text     XmlText `xml:"text" json:"text,omitempty"`
-		} `xml:"contactName" json:"contact_name"`
-		Adr *struct {
-			Text     XmlText `xml:",chardata" json:"text,omitempty"`
-			Extadr   string  `xml:"extadr" json:"extadr,omitempty"`
-			Street   string  `xml:"street" json:"street,omitempty"`
-			Locality string  `xml:"locality" json:"locality,omitempty"`
-			Pcode    string  `xml:"pcode" json:"pcode,omitempty"`
-			Country  string  `xml:"country" json:"country,omitempty"`
-		} `xml:"adr" json:"adr"`
-		Email     string `xml:"email" json:"email,omitempty"`
-		Telephone *struct {
-			Text    XmlText `xml:",chardata" json:"text,omitempty"`
-			Teltype string  `xml:"teltype,attr" json:"teltype,omitempty"`
-		} `xml:"telephone" json:"telephone"`
-		WebLink *WebLink `xml:"webLink" json:"web_link"`
-	} `xml:"contactData" json:"contact_data"`
-	InfoBlock InfoBlock `xml:"infoBlock" json:"info_block"`
+	ContactData ContactData `xml:"contactData" json:"contact_data"`
+	InfoBlock   InfoBlock   `xml:"infoBlock" json:"info_block"`
 }
 
 type Course struct {

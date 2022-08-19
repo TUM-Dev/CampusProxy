@@ -19,8 +19,13 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/course": {
+        "/course": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This endpoint returns all information about a course, e.g. its title, description, semester, contacts and more.",
                 "consumes": [
                     "application/json",
@@ -74,8 +79,70 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/course/students": {
+        "/course/events": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This endpoint returns a list containing all events of a course.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "course"
+                ],
+                "summary": "list events for course.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "courseID",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Events",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/routes.SingleEvent"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/course/students": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This endpoint returns a list containing all students enrolled in a course.",
                 "consumes": [
                     "application/json",
@@ -131,9 +198,173 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/organization": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This endpoint returns all information about an organization and its sub-organization.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "organization"
+                ],
+                "summary": "export an organization.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "DE or EN, optional",
+                        "name": "language",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "orgUnitID",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organization",
+                        "schema": {
+                            "$ref": "#/definitions/routes.OrgUnit"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "routes.Address": {
+            "type": "object",
+            "properties": {
+                "contactName": {
+                    "type": "string",
+                    "example": "Immobilien (ZA 4)"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "Deutschland"
+                },
+                "floor": {
+                    "type": "string",
+                    "example": "1.Obergeschoß"
+                },
+                "locality": {
+                    "type": "string",
+                    "example": "Garching b. München"
+                },
+                "pCode": {
+                    "type": "string",
+                    "example": "85748"
+                },
+                "region": {
+                    "type": "string",
+                    "example": "Bayern"
+                },
+                "roomAdditionalData": {
+                    "type": "string",
+                    "example": "101, Hörsaal 1, \"Interims I\""
+                },
+                "roomCode": {
+                    "type": "string",
+                    "example": "5620.01.101"
+                },
+                "roomID": {
+                    "type": "integer",
+                    "example": 62015
+                },
+                "street": {
+                    "type": "string",
+                    "example": "Boltzmannstr.    5"
+                }
+            }
+        },
+        "routes.ContactData": {
+            "type": "object",
+            "properties": {
+                "adr": {
+                    "type": "object",
+                    "properties": {
+                        "country": {
+                            "type": "string"
+                        },
+                        "extadr": {
+                            "type": "string"
+                        },
+                        "locality": {
+                            "type": "string"
+                        },
+                        "pcode": {
+                            "type": "string"
+                        },
+                        "street": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "contact_name": {
+                    "type": "object",
+                    "properties": {
+                        "chardata": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "email": {
+                    "type": "string"
+                },
+                "telephone": {
+                    "type": "object",
+                    "properties": {
+                        "teltype": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "text": {
+                    "type": "string"
+                },
+                "web_link": {
+                    "$ref": "#/definitions/routes.WebLink"
+                }
+            }
+        },
         "routes.Course": {
             "type": "object",
             "properties": {
@@ -330,67 +561,81 @@ const docTemplate = `{
                 }
             }
         },
-        "routes.Person": {
+        "routes.OrgUnit": {
             "type": "object",
             "properties": {
-                "contact_data": {
+                "contacts": {
                     "type": "object",
                     "properties": {
-                        "adr": {
-                            "type": "object",
-                            "properties": {
-                                "country": {
-                                    "type": "string"
-                                },
-                                "extadr": {
-                                    "type": "string"
-                                },
-                                "locality": {
-                                    "type": "string"
-                                },
-                                "pcode": {
-                                    "type": "string"
-                                },
-                                "street": {
-                                    "type": "string"
-                                },
-                                "text": {
-                                    "type": "string"
-                                }
-                            }
+                        "contactData": {
+                            "$ref": "#/definitions/routes.ContactData"
                         },
-                        "contact_name": {
-                            "type": "object",
-                            "properties": {
-                                "chardata": {
-                                    "type": "string"
-                                },
-                                "text": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "email": {
+                        "text": {
+                            "description": "e.g. \"Lehrstuhl\", \"Arbeitsgruppe\", \"Ausschuss\", ...",
                             "type": "string"
-                        },
-                        "telephone": {
-                            "type": "object",
-                            "properties": {
-                                "teltype": {
-                                    "type": "string"
-                                },
-                                "text": {
-                                    "type": "string"
+                        }
+                    }
+                },
+                "infoBlock": {
+                    "$ref": "#/definitions/routes.InfoBlock"
+                },
+                "orgUnitCode": {
+                    "type": "string"
+                },
+                "orgUnitID": {
+                    "type": "string"
+                },
+                "orgUnitKind": {
+                    "type": "object",
+                    "properties": {
+                        "subBlock": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "text": {
+                                        "description": "e.g. \"Lehrstuhl\", \"Arbeitsgruppe\", \"Ausschuss\", ...",
+                                        "type": "string"
+                                    },
+                                    "userDefined": {
+                                        "description": "always \"name\"",
+                                        "type": "string"
+                                    }
                                 }
                             }
                         },
                         "text": {
                             "type": "string"
-                        },
-                        "web_link": {
-                            "$ref": "#/definitions/routes.WebLink"
                         }
                     }
+                },
+                "orgUnitName": {
+                    "type": "object",
+                    "properties": {
+                        "chardata": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "orgUnits": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/routes.OrgUnit"
+                    }
+                },
+                "text": {
+                    "type": "string"
+                }
+            }
+        },
+        "routes.Person": {
+            "type": "object",
+            "properties": {
+                "contact_data": {
+                    "$ref": "#/definitions/routes.ContactData"
                 },
                 "ident": {
                     "type": "string"
@@ -456,6 +701,66 @@ const docTemplate = `{
                 }
             }
         },
+        "routes.SingleEvent": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/routes.Address"
+                },
+                "comment": {
+                    "type": "string",
+                    "example": "Videoübertragung aus MW 0001"
+                },
+                "dtend": {
+                    "type": "string",
+                    "example": "2020-12-02T14:00:00Z"
+                },
+                "dtstamp": {
+                    "type": "string",
+                    "example": "2020-03-20T10:15:50Z"
+                },
+                "dtstart": {
+                    "type": "string",
+                    "example": "2020-12-02T13:00:00Z"
+                },
+                "duration": {
+                    "type": "string",
+                    "example": "PT01H00M"
+                },
+                "groupID": {
+                    "type": "integer",
+                    "example": 850243
+                },
+                "groupName": {
+                    "type": "string",
+                    "example": "Standardgruppe"
+                },
+                "recurringID": {
+                    "type": "string",
+                    "example": "431418"
+                },
+                "singleEventID": {
+                    "type": "integer",
+                    "example": 888021023
+                },
+                "singleEventTypeID": {
+                    "type": "string",
+                    "example": "A"
+                },
+                "singleEventTypeName": {
+                    "type": "string",
+                    "example": "Abhaltung"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "gelöscht"
+                },
+                "statusID": {
+                    "type": "string",
+                    "example": "FG"
+                }
+            }
+        },
         "routes.WebLink": {
             "type": "object",
             "properties": {
@@ -470,17 +775,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "x-api-key",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "",
-	BasePath:         "",
-	Schemes:          []string{},
-	Title:            "CampusOnline Webservices",
-	Description:      "",
+	Host:             "localhost:8020",
+	BasePath:         "/api/v1",
+	Schemes:          []string{"http", "https"},
+	Title:            "CAMPUSOnline Webservice proxy",
+	Description:      "This is the proxy server for CAMPUSOnline Webservices, enabling a nicely documented and uniform rest access to CAMPUSOnline resources.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

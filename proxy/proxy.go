@@ -4,21 +4,21 @@ import (
 	"CampusOnlineWebservices/proxy/routes"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
+
+	_ "CampusOnlineWebservices/docs"
 )
 
 type Proxy struct {
 }
 
 // Start starts the CAMPUSOnline Webservice proxy server
-// @title CAMPUSOnline Webservice proxy
-// @version 1.0
-// @description This is the proxy server for CAMPUSOnline Webservices, enabling a nicely documented and uniform rest access to CAMPUSOnline resources.
-// @host localhost:8081
-// @BasePath /api/v1
-// @schemes http https
 func (p *Proxy) Start() {
 	r := gin.New()
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	api := r.Group("/api/v1")
 	api.Use(func(c *gin.Context) {
 		type r struct {
@@ -45,8 +45,12 @@ func (p *Proxy) Start() {
 			c.Writer.Write([]byte(c.Errors[0].Error()))
 		}
 	})
+
 	api.GET("/course", routes.ExportCourse)
 	api.GET("/course/students", routes.ExportCourseStudents)
+	api.GET("/course/events", routes.ExportCourseEvents)
+
+	api.GET("/organization", routes.ExportOrganization)
 	fmt.Println(http.ListenAndServe(":8020", r))
 }
 
