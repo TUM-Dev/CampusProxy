@@ -16,8 +16,8 @@ type exportCourseStudentsRequest struct {
 // @Summary list enrolled students for course.
 // @Description This endpoint returns a list containing all students enrolled in a course.
 // @Failure 400 {object} string "Bad Request"
-// @Failure 401 {object} Error "Unauthorized"
-// @Failure 404 {object} Error "Not Found"
+// @Failure 401 {object} ApiError "Unauthorized"
+// @Failure 404 {object} ApiError "Not Found"
 // @Success 200 {object} []Person "Students"
 // @Accept json,xml
 // @Param SearchRequest query exportCourseStudentsRequest true "request"

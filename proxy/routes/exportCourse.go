@@ -19,8 +19,8 @@ type exportCourseRequest struct {
 // @Summary export course information.
 // @Description This endpoint returns all information about a course, e.g. its title, description, semester, contacts and more.
 // @Failure 400 {object} string "Bad Request"
-// @Failure 401 {object} Error "Unauthorized"
-// @Failure 404 {object} Error "Not Found"
+// @Failure 401 {object} ApiError "Unauthorized"
+// @Failure 404 {object} ApiError "Not Found"
 // @Success 200 {object} Course "Course"
 // @Accept json,xml
 // @Param SearchRequest query exportCourseRequest true "request"

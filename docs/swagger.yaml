@@ -33,6 +33,15 @@ definitions:
         example: Boltzmannstr.    5
         type: string
     type: object
+  routes.ApiError:
+    properties:
+      msg:
+        example: CampusOnline returned a status code != 200.
+        type: string
+      status:
+        example: 420
+        type: integer
+    type: object
   routes.ContactData:
     properties:
       adr:
@@ -171,13 +180,6 @@ definitions:
         type: string
       type_name:
         type: string
-    type: object
-  routes.Error:
-    properties:
-      message:
-        type: string
-      status:
-        type: integer
     type: object
   routes.InfoBlock:
     properties:
@@ -380,11 +382,11 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
       security:
       - ApiKeyAuth: []
       summary: export course information.
@@ -416,11 +418,11 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
       security:
       - ApiKeyAuth: []
       summary: list events for course.
@@ -457,11 +459,11 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
       security:
       - ApiKeyAuth: []
       summary: list enrolled students for course.
@@ -481,6 +483,7 @@ paths:
         type: string
       - in: query
         name: orgUnitID
+        required: true
         type: string
       produces:
       - application/json
@@ -496,11 +499,11 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/routes.Error'
+            $ref: '#/definitions/routes.ApiError'
       security:
       - ApiKeyAuth: []
       summary: export an organization.

@@ -17,8 +17,8 @@ type exportCourseEventsRequest struct {
 // @Summary list events for course.
 // @Description This endpoint returns a list containing all events of a course.
 // @Failure 400 {object} string "Bad Request"
-// @Failure 401 {object} Error "Unauthorized"
-// @Failure 404 {object} Error "Not Found"
+// @Failure 401 {object} ApiError "Unauthorized"
+// @Failure 404 {object} ApiError "Not Found"
 // @Success 200 {object} []SingleEvent "Events"
 // @Accept json,xml
 // @Param SearchRequest query exportCourseEventsRequest true "request"

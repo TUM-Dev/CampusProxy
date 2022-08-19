@@ -36,7 +36,7 @@ func (p *Proxy) Start() {
 	api.Use(func(c *gin.Context) {
 		c.Next()
 		if _, exists := c.Get("ApiError"); exists {
-			c.AbortWithStatusJSON(c.MustGet("ApiError").(int), ApiError{
+			c.AbortWithStatusJSON(c.MustGet("ApiError").(int), routes.ApiError{
 				Status: c.MustGet("ApiError").(int),
 				Msg:    "CampusOnline returned a status code != 200.",
 			})
@@ -51,10 +51,6 @@ func (p *Proxy) Start() {
 	api.GET("/course/events", routes.ExportCourseEvents)
 
 	api.GET("/organization", routes.ExportOrganization)
+	fmt.Println("Started proxy server.")
 	fmt.Println(http.ListenAndServe(":8020", r))
-}
-
-type ApiError struct {
-	Status int
-	Msg    string
 }

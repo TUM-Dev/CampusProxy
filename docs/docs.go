@@ -67,13 +67,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -124,13 +124,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -187,13 +187,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -228,7 +228,8 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "name": "orgUnitID",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -247,13 +248,13 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -303,6 +304,19 @@ const docTemplate = `{
                 "street": {
                     "type": "string",
                     "example": "Boltzmannstr.    5"
+                }
+            }
+        },
+        "routes.ApiError": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string",
+                    "example": "CampusOnline returned a status code != 200."
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 420
                 }
             }
         },
@@ -519,17 +533,6 @@ const docTemplate = `{
                 },
                 "type_name": {
                     "type": "string"
-                }
-            }
-        },
-        "routes.Error": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
                 }
             }
         },

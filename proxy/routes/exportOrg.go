@@ -8,8 +8,8 @@ import (
 )
 
 type exportOrganizationRequest struct {
-	OrgUnitID string  `json:"orgUnitID" form:"orgUnitID" xml:"orgUnitID" `
-	Language  *string `json:"language" form:"language" xml:"language"` // DE or EN, optional
+	OrgUnitID string  `json:"orgUnitID" form:"orgUnitID" xml:"orgUnitID" validate:"required"`
+	Language  *string `json:"language" form:"language" xml:"language" validate:"optional"` // DE or EN, optional
 }
 
 // ExportOrganization returns the information of an organization and its children.
@@ -17,8 +17,8 @@ type exportOrganizationRequest struct {
 // @Summary export an organization.
 // @Description This endpoint returns all information about an organization and its sub-organization.
 // @Failure 400 {object} string "Bad Request"
-// @Failure 401 {object} Error "Unauthorized"
-// @Failure 404 {object} Error "Not Found"
+// @Failure 401 {object} ApiError "Unauthorized"
+// @Failure 404 {object} ApiError "Not Found"
 // @Success 200 {object} OrgUnit "Organization"
 // @Accept json,xml
 // @Param SearchRequest query exportOrganizationRequest true "request"

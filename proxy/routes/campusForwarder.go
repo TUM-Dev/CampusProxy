@@ -43,3 +43,8 @@ type Error struct {
 	Message string   `xml:"Message"`
 	Status  int      `xml:"-" json:"status"`
 }
+
+type ApiError struct {
+	Status int    `json:"status" example:"420"`
+	Msg    string `json:"msg" example:"CampusOnline returned a status code != 200."`
+}

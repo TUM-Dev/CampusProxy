@@ -64,13 +64,13 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -121,13 +121,13 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -184,13 +184,13 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -225,7 +225,8 @@
                     {
                         "type": "string",
                         "name": "orgUnitID",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -244,13 +245,13 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/routes.Error"
+                            "$ref": "#/definitions/routes.ApiError"
                         }
                     }
                 }
@@ -300,6 +301,19 @@
                 "street": {
                     "type": "string",
                     "example": "Boltzmannstr.    5"
+                }
+            }
+        },
+        "routes.ApiError": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string",
+                    "example": "CampusOnline returned a status code != 200."
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 420
                 }
             }
         },
@@ -516,17 +530,6 @@
                 },
                 "type_name": {
                     "type": "string"
-                }
-            }
-        },
-        "routes.Error": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
                 }
             }
         },
