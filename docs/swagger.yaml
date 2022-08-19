@@ -343,7 +343,6 @@ definitions:
       user_defined:
         type: string
     type: object
-host: localhost:8020
 info:
   contact:
     name: Joscha Henningsen

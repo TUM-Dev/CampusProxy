@@ -16,7 +16,6 @@ import "CampusOnlineWebservices/proxy"
 // @name                         x-api-key
 // @description					 A valid token to authenticate with CampusOnline.
 
-// @host localhost:8020
 // @BasePath /api/v1
 // @schemes http https
 func main() {
