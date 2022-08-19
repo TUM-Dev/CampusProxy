@@ -849,7 +849,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
 	BasePath:         "/api/v1",
-	Schemes:          []string{"http", "https"},
+	Schemes:          []string{},
 	Title:            "CAMPUSOnline Webservice proxy",
 	Description:      "This is the proxy server for CAMPUSOnline Webservices, enabling a nicely documented and uniform rest access to CAMPUSOnline resources.",
 	InfoInstanceName: "swagger",

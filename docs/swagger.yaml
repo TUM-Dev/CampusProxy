@@ -547,9 +547,6 @@ paths:
       summary: Export an organizations courses.
       tags:
       - organization
-schemes:
-- http
-- https
 securityDefinitions:
   ApiKeyAuth:
     in: header
