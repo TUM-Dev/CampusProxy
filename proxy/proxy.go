@@ -51,6 +51,7 @@ func (p *Proxy) Start() {
 	api.GET("/course/events", routes.ExportCourseEvents)
 
 	api.GET("/organization", routes.ExportOrganization)
+	api.GET("/organization/courses", routes.ExportCoursesByOrg)
 	fmt.Println("Started proxy server.")
 	fmt.Println(http.ListenAndServe(":8020", r))
 }

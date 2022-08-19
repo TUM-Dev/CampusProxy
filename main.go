@@ -17,7 +17,6 @@ import "CampusOnlineWebservices/proxy"
 // @description					 A valid token to authenticate with CampusOnline.
 
 // @BasePath /api/v1
-// @schemes http https
 func main() {
 	p := proxy.Proxy{}
 	p.Start()

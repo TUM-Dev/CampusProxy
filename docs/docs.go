@@ -259,6 +259,95 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/organization/courses": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This endpoint returns all courses that belong to the specified organization and all courses of sub-orgs. If a course belongs to a subOrg, orgUnitID is the ID of the subOrg.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "organization"
+                ],
+                "summary": "Export an organizations courses.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 99,
+                        "description": "how deep to include children (only relevant if includeChildren is true).",
+                        "name": "depth",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "whether to include sub-organizations courses.",
+                        "name": "includeChildren",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "DE",
+                            "EN"
+                        ],
+                        "type": "string",
+                        "name": "language",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "orgUnitID",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "W",
+                            "S"
+                        ],
+                        "type": "string",
+                        "name": "teachingTerm",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Courses",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/routes.Course"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -388,9 +477,6 @@ const docTemplate = `{
                         "admission_description": {
                             "type": "object",
                             "properties": {
-                                "text": {
-                                    "type": "string"
-                                },
                                 "user_defined": {
                                     "type": "string"
                                 },
@@ -398,9 +484,6 @@ const docTemplate = `{
                                     "$ref": "#/definitions/routes.WebLink"
                                 }
                             }
-                        },
-                        "text": {
-                            "type": "string"
                         }
                     }
                 },
@@ -412,9 +495,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/routes.Person"
                             }
-                        },
-                        "text": {
-                            "type": "string"
                         }
                     }
                 },
@@ -430,9 +510,6 @@ const docTemplate = `{
                 "course_name": {
                     "type": "object",
                     "properties": {
-                        "chardata": {
-                            "type": "string"
-                        },
                         "text": {
                             "type": "string"
                         }
@@ -454,9 +531,6 @@ const docTemplate = `{
                     "properties": {
                         "info_block": {
                             "$ref": "#/definitions/routes.InfoBlock"
-                        },
-                        "text": {
-                            "type": "string"
                         }
                     }
                 },
@@ -471,9 +545,6 @@ const docTemplate = `{
                     "properties": {
                         "teaching_lang": {
                             "type": "string"
-                        },
-                        "text": {
-                            "type": "string"
                         }
                     }
                 },
@@ -486,9 +557,6 @@ const docTemplate = `{
                 "level": {
                     "type": "object",
                     "properties": {
-                        "text": {
-                            "type": "string"
-                        },
                         "web_link": {
                             "$ref": "#/definitions/routes.WebLink"
                         }
@@ -509,23 +577,14 @@ const docTemplate = `{
                         "teaching_activity_name": {
                             "type": "object",
                             "properties": {
-                                "chardata": {
-                                    "type": "string"
-                                },
                                 "text": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "text": {
-                            "type": "string"
                         }
                     }
                 },
                 "teaching_term": {
-                    "type": "string"
-                },
-                "text": {
                     "type": "string"
                 },
                 "type_id": {
@@ -768,9 +827,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "href": {
-                    "type": "string"
-                },
-                "text": {
                     "type": "string"
                 },
                 "user_defined": {

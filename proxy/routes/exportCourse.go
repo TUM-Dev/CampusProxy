@@ -68,7 +68,7 @@ type Picture struct {
 }
 
 type WebLink struct {
-	Text        XmlText `xml:",chardata" json:"text,omitempty"`
+	Text        XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 	UserDefined string  `xml:"userDefined,attr" json:"user_defined,omitempty"`
 	Href        string  `xml:"href" json:"href,omitempty"`
 }
@@ -125,19 +125,19 @@ type Person struct {
 }
 
 type Course struct {
-	Text       XmlText `xml:",chardata" json:"text,omitempty"`
+	Text       XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 	Language   string  `xml:"language,attr" json:"language,omitempty"`
 	TypeID     string  `xml:"typeID,attr" json:"type_id,omitempty"`
 	TypeName   string  `xml:"typeName,attr" json:"type_name,omitempty"`
 	CourseID   string  `xml:"courseID" json:"course_id,omitempty"`
 	CourseName struct {
-		Chardata string  `xml:",chardata" json:"chardata,omitempty"`
+		Chardata string  `xml:",chardata" json:"-" swaggerignore:"true"`
 		Text     XmlText `xml:"text" json:"text,omitempty"`
 	} `xml:"courseName" json:"course_name"`
 	CourseCode        string `xml:"courseCode" json:"course_code,omitempty"`
 	CourseDescription string `xml:"courseDescription" json:"course_description,omitempty"`
 	Level             struct {
-		Text    XmlText `xml:",chardata" json:"text,omitempty"`
+		Text    XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 		WebLink WebLink `xml:"webLink" json:"web_link"`
 	} `xml:"level" json:"level"`
 	TeachingTerm string `xml:"teachingTerm" json:"teaching_term,omitempty"`
@@ -147,9 +147,9 @@ type Course struct {
 	} `xml:"credits" json:"credits"`
 	LearningObjectives string `xml:"learningObjectives" json:"learning_objectives,omitempty"`
 	AdmissionInfo      struct {
-		Text                 XmlText `xml:",chardata" json:"text,omitempty"`
+		Text                 XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 		AdmissionDescription struct {
-			Text        XmlText `xml:",chardata" json:"text,omitempty"`
+			Text        XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 			UserDefined string  `xml:"userDefined,attr" json:"user_defined,omitempty"`
 			WebLink     WebLink `xml:"webLink" json:"web_link"`
 		} `xml:"admissionDescription" json:"admission_description"`
@@ -157,25 +157,25 @@ type Course struct {
 	FormOfTeaching      string `xml:"formOfTeaching" json:"form_of_teaching,omitempty"`
 	FormOfAssessment    string `xml:"formOfAssessment" json:"form_of_assessment,omitempty"`
 	InstructionLanguage struct {
-		Text         XmlText `xml:",chardata" json:"text,omitempty"`
+		Text         XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 		TeachingLang string  `xml:"teachingLang,attr" json:"teaching_lang,omitempty"`
 	} `xml:"instructionLanguage" json:"instruction_language"`
-	Syllabus string `xml:"syllabus" json:"syllabus,omitempty"`
+	Syllabus XmlText `xml:"syllabus" json:"syllabus,omitempty"`
 	Exam     struct {
-		Text      XmlText   `xml:",chardata" json:"text,omitempty"`
+		Text      XmlText   `xml:",chardata" json:"-" swaggerignore:"true"`
 		InfoBlock InfoBlock `xml:"infoBlock" json:"info_block"`
 	} `xml:"exam" json:"exam"`
 	TeachingActivity struct {
-		Text                 XmlText `xml:",chardata" json:"text,omitempty"`
+		Text                 XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 		TeachingActivityID   string  `xml:"teachingActivityID" json:"teaching_activity_id,omitempty"`
 		TeachingActivityName struct {
-			Chardata string  `xml:",chardata" json:"chardata,omitempty"`
+			Chardata string  `xml:",chardata" json:"-" swaggerignore:"true"`
 			Text     XmlText `xml:"text" json:"text,omitempty"`
 		} `xml:"teachingActivityName" json:"teaching_activity_name"`
 		InfoBlock InfoBlock `xml:"infoBlock" json:"info_block"`
 	} `xml:"teachingActivity" json:"teaching_activity"`
 	Contacts struct {
-		Text    XmlText  `xml:",chardata" json:"text,omitempty"`
+		Text    XmlText  `xml:",chardata" json:"-" swaggerignore:"true"`
 		Persons []Person `xml:"person" json:"person,omitempty"`
 	} `xml:"contacts" json:"contacts"`
 }

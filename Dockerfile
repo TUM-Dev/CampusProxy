@@ -1,5 +1,6 @@
 FROM golang:1.19-alpine3.16 as builder
 
+# tzdata ensures go can bundle the timezones into time.Time which we use to parse times from the api
 RUN apk add ca-certificates tzdata && update-ca-certificates
 
 WORKDIR /app

@@ -86,15 +86,11 @@ definitions:
         properties:
           admission_description:
             properties:
-              text:
-                type: string
               user_defined:
                 type: string
               web_link:
                 $ref: '#/definitions/routes.WebLink'
             type: object
-          text:
-            type: string
         type: object
       contacts:
         properties:
@@ -102,8 +98,6 @@ definitions:
             items:
               $ref: '#/definitions/routes.Person'
             type: array
-          text:
-            type: string
         type: object
       course_code:
         type: string
@@ -113,8 +107,6 @@ definitions:
         type: string
       course_name:
         properties:
-          chardata:
-            type: string
           text:
             type: string
         type: object
@@ -129,8 +121,6 @@ definitions:
         properties:
           info_block:
             $ref: '#/definitions/routes.InfoBlock'
-          text:
-            type: string
         type: object
       form_of_assessment:
         type: string
@@ -140,8 +130,6 @@ definitions:
         properties:
           teaching_lang:
             type: string
-          text:
-            type: string
         type: object
       language:
         type: string
@@ -149,8 +137,6 @@ definitions:
         type: string
       level:
         properties:
-          text:
-            type: string
           web_link:
             $ref: '#/definitions/routes.WebLink'
         type: object
@@ -164,17 +150,11 @@ definitions:
             type: string
           teaching_activity_name:
             properties:
-              chardata:
-                type: string
               text:
                 type: string
             type: object
-          text:
-            type: string
         type: object
       teaching_term:
-        type: string
-      text:
         type: string
       type_id:
         type: string
@@ -337,8 +317,6 @@ definitions:
   routes.WebLink:
     properties:
       href:
-        type: string
-      text:
         type: string
       user_defined:
         type: string
@@ -506,6 +484,67 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: export an organization.
+      tags:
+      - organization
+  /organization/courses:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns all courses that belong to the specified
+        organization and all courses of sub-orgs. If a course belongs to a subOrg,
+        orgUnitID is the ID of the subOrg.
+      parameters:
+      - default: 99
+        description: how deep to include children (only relevant if includeChildren
+          is true).
+        in: query
+        name: depth
+        type: integer
+      - default: true
+        description: whether to include sub-organizations courses.
+        in: query
+        name: includeChildren
+        type: boolean
+      - enum:
+        - DE
+        - EN
+        in: query
+        name: language
+        type: string
+      - in: query
+        name: orgUnitID
+        type: string
+      - enum:
+        - W
+        - S
+        in: query
+        name: teachingTerm
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Courses
+          schema:
+            items:
+              $ref: '#/definitions/routes.Course'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+      security:
+      - ApiKeyAuth: []
+      summary: Export an organizations courses.
       tags:
       - organization
 schemes:
