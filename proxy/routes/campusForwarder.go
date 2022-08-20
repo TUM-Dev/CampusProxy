@@ -16,6 +16,9 @@ var routeMaps = map[string]string{
 	"/api/v1/course/events":        "/tumonlinej/ws/webservice_v1.0/rdm/course/events/xml",
 	"/api/v1/organization":         "/tumonlinej/ws/webservice_v1.0/cdm/organization/xml",
 	"/api/v1/organization/courses": "/tumonlinej/ws/webservice_v1.0/cdm/organization/courses/xml",
+	"/api/v1/organization/persons": "/tumonlinej/ws/webservice_v1.0/cdm/organization/persons/xml",
+	"/api/v1/person/":              "/tumonlinej/ws/webservice_v1.0/cdm/person/xml",
+	"/api/v1/person/courses":       "/tumonlinej/ws/webservice_v1.0/cdm/person/courses/xml",
 }
 
 func campusForward(c *gin.Context, req any) *http.Response {

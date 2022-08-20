@@ -2,7 +2,7 @@ package main
 
 import "CampusOnlineWebservices/proxy"
 
-//go:generate  swag init --parseDependency proxy/proxy.go -o docs
+//go:generate swag init --parseDependency proxy/proxy.go -o docs
 
 // @title CAMPUSOnline Webservice proxy
 // @version 1.0

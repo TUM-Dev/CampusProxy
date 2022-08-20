@@ -348,6 +348,227 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/organization/persons": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This endpoint returns all persons that work at an organization.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "organization"
+                ],
+                "summary": "export persons of an organization.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 99,
+                        "description": "how deep to include children (only relevant if includeChildren is true).",
+                        "name": "depth",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "whether to include sub-organizations persons.",
+                        "name": "includeChildren",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "DE",
+                            "EN"
+                        ],
+                        "type": "string",
+                        "name": "language",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "orgUnitID",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persons",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/routes.Person"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    }
+                }
+            }
+        },
+        "/person": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This endpoint returns all info about a person.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "person"
+                ],
+                "summary": "export person.",
+                "parameters": [
+                    {
+                        "enum": [
+                            "DE",
+                            "EN"
+                        ],
+                        "type": "string",
+                        "name": "language",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "personID",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Person",
+                        "schema": {
+                            "$ref": "#/definitions/routes.Person"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    }
+                }
+            }
+        },
+        "/person/courses": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This endpoint returns all courses a person participates in (e.g. by teaching it, or being another part of the team). This endpoint does **not** return courses a student is enrolled in.",
+                "consumes": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "person"
+                ],
+                "summary": "export person's courses.",
+                "parameters": [
+                    {
+                        "enum": [
+                            "DE",
+                            "EN"
+                        ],
+                        "type": "string",
+                        "name": "language",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "personID",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "W",
+                            "S"
+                        ],
+                        "type": "string",
+                        "name": "teachingTerm",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Courses",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/routes.Course"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/routes.ApiError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -460,8 +681,13 @@ const docTemplate = `{
                         }
                     }
                 },
-                "text": {
-                    "type": "string"
+                "visitHour": {
+                    "type": "object",
+                    "properties": {
+                        "header": {
+                            "type": "string"
+                        }
+                    }
                 },
                 "web_link": {
                     "$ref": "#/definitions/routes.WebLink"
@@ -713,9 +939,6 @@ const docTemplate = `{
                         },
                         "given": {
                             "type": "string"
-                        },
-                        "text": {
-                            "type": "string"
                         }
                     }
                 },
@@ -725,9 +948,6 @@ const docTemplate = `{
                 "role": {
                     "type": "object",
                     "properties": {
-                        "chardata": {
-                            "type": "string"
-                        },
                         "role_id": {
                             "type": "string"
                         },
@@ -735,9 +955,6 @@ const docTemplate = `{
                             "type": "string"
                         }
                     }
-                },
-                "text": {
-                    "type": "string"
                 }
             }
         },

@@ -85,7 +85,7 @@ type InfoBlock struct {
 }
 
 type ContactData struct {
-	Text        XmlText `xml:",chardata" json:"text,omitempty"`
+	Text        XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 	ContactName *struct {
 		Chardata string  `xml:",chardata" json:"chardata,omitempty"`
 		Text     XmlText `xml:"text" json:"text,omitempty"`
@@ -103,20 +103,24 @@ type ContactData struct {
 		Text    XmlText `xml:",chardata" json:"text,omitempty"`
 		Teltype string  `xml:"teltype,attr" json:"teltype,omitempty"`
 	} `xml:"telephone" json:"telephone"`
-	WebLink *WebLink `xml:"webLink" json:"web_link"`
+	WebLink   *WebLink `xml:"webLink" json:"web_link"`
+	VisitHour *struct {
+		Text   string `xml:",chardata" json:"-" swaggerignore:"true"`
+		Header string `xml:"header" json:"header"`
+	} `xml:"visitHour"`
 }
 
 type Person struct {
-	Text     XmlText `xml:",chardata" json:"text,omitempty"`
-	Ident    string  `xml:"ident,attr"`
+	Text     XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
+	Ident    *string `xml:"ident,attr" json:"ident"`
 	PersonID string  `xml:"personID" json:"person_id,omitempty"`
 	Name     struct {
-		Text   XmlText `xml:",chardata" json:"text,omitempty"`
+		Text   XmlText `xml:",chardata" json:"-" swaggerignore:"true"`
 		Given  string  `xml:"given" json:"given,omitempty"`
 		Family string  `xml:"family" json:"family,omitempty"`
 	} `xml:"name" json:"name"`
 	Role *struct {
-		Chardata string  `xml:",chardata" json:"chardata,omitempty"`
+		Chardata string  `xml:",chardata" json:"-" swaggerignore:"true"`
 		RoleID   string  `xml:"roleID,attr" json:"role_id,omitempty"`
 		Text     XmlText `xml:"text" json:"text,omitempty"`
 	} `xml:"role" json:"role"`

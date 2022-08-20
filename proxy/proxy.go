@@ -46,12 +46,25 @@ func (p *Proxy) Start() {
 		}
 	})
 
-	api.GET("/course", routes.ExportCourse)
-	api.GET("/course/students", routes.ExportCourseStudents)
-	api.GET("/course/events", routes.ExportCourseEvents)
+	course := api.Group("/course")
+	{
+		course.GET("/", routes.ExportCourse)
+		course.GET("/students", routes.ExportCourseStudents)
+		course.GET("/events", routes.ExportCourseEvents)
+	}
 
-	api.GET("/organization", routes.ExportOrganization)
-	api.GET("/organization/courses", routes.ExportCoursesByOrg)
+	org := api.Group("/organization")
+	{
+		org.GET("/", routes.ExportOrganization)
+		org.GET("/courses", routes.ExportCoursesByOrg)
+		org.GET("/persons", routes.ExportPersonsByOrg)
+	}
+
+	persons := api.Group("/person")
+	{
+		persons.GET("/", routes.ExportPerson)
+		persons.GET("/courses", routes.ExportCoursesByPerson)
+	}
 	fmt.Println("Started proxy server.")
 	fmt.Println(http.ListenAndServe(":8020", r))
 }

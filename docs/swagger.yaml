@@ -75,8 +75,11 @@ definitions:
           text:
             type: string
         type: object
-      text:
-        type: string
+      visitHour:
+        properties:
+          header:
+            type: string
+        type: object
       web_link:
         $ref: '#/definitions/routes.WebLink'
     type: object
@@ -239,22 +242,16 @@ definitions:
             type: string
           given:
             type: string
-          text:
-            type: string
         type: object
       person_id:
         type: string
       role:
         properties:
-          chardata:
-            type: string
           role_id:
             type: string
           text:
             type: string
         type: object
-      text:
-        type: string
     type: object
   routes.Picture:
     properties:
@@ -547,6 +544,152 @@ paths:
       summary: Export an organizations courses.
       tags:
       - organization
+  /organization/persons:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns all persons that work at an organization.
+      parameters:
+      - default: 99
+        description: how deep to include children (only relevant if includeChildren
+          is true).
+        in: query
+        name: depth
+        type: integer
+      - default: true
+        description: whether to include sub-organizations persons.
+        in: query
+        name: includeChildren
+        type: boolean
+      - enum:
+        - DE
+        - EN
+        in: query
+        name: language
+        type: string
+      - in: query
+        name: orgUnitID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Persons
+          schema:
+            items:
+              $ref: '#/definitions/routes.Person'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+      security:
+      - ApiKeyAuth: []
+      summary: export persons of an organization.
+      tags:
+      - organization
+  /person:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns all info about a person.
+      parameters:
+      - enum:
+        - DE
+        - EN
+        in: query
+        name: language
+        type: string
+      - in: query
+        name: personID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Person
+          schema:
+            $ref: '#/definitions/routes.Person'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+      security:
+      - ApiKeyAuth: []
+      summary: export person.
+      tags:
+      - person
+  /person/courses:
+    get:
+      consumes:
+      - application/json
+      - text/xml
+      description: This endpoint returns all courses a person participates in (e.g.
+        by teaching it, or being another part of the team). This endpoint does **not**
+        return courses a student is enrolled in.
+      parameters:
+      - enum:
+        - DE
+        - EN
+        in: query
+        name: language
+        type: string
+      - in: query
+        name: personID
+        required: true
+        type: string
+      - enum:
+        - W
+        - S
+        in: query
+        name: teachingTerm
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Courses
+          schema:
+            items:
+              $ref: '#/definitions/routes.Course'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/routes.ApiError'
+      security:
+      - ApiKeyAuth: []
+      summary: export person's courses.
+      tags:
+      - person
 securityDefinitions:
   ApiKeyAuth:
     in: header
