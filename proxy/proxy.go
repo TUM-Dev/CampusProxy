@@ -48,21 +48,21 @@ func (p *Proxy) Start() {
 
 	course := api.Group("/course")
 	{
-		course.GET("/", routes.ExportCourse)
+		course.GET("", routes.ExportCourse)
 		course.GET("/students", routes.ExportCourseStudents)
 		course.GET("/events", routes.ExportCourseEvents)
 	}
 
 	org := api.Group("/organization")
 	{
-		org.GET("/", routes.ExportOrganization)
+		org.GET("", routes.ExportOrganization)
 		org.GET("/courses", routes.ExportCoursesByOrg)
 		org.GET("/persons", routes.ExportPersonsByOrg)
 	}
 
 	persons := api.Group("/person")
 	{
-		persons.GET("/", routes.ExportPerson)
+		persons.GET("", routes.ExportPerson)
 		persons.GET("/courses", routes.ExportCoursesByPerson)
 	}
 	fmt.Println("Started proxy server.")

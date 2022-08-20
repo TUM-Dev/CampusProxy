@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sonh/qs"
+	"log"
 	"net/http"
 )
 
@@ -29,7 +30,9 @@ func campusForward(c *gin.Context, req any) *http.Response {
 		return nil
 	}
 	values.Set("token", c.MustGet("token").(string))
-	resp, err := http.Get(baseURL + routeMaps[c.Request.URL.Path] + "?" + values.Encode())
+	u := baseURL + routeMaps[c.Request.URL.Path] + "?" + values.Encode()
+	log.Println(u)
+	resp, err := http.Get(u)
 	if err != nil {
 		fmt.Println(err)
 		return nil
