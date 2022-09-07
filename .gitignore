@@ -1,4 +1,9 @@
 .idea
 *.xml
 example
-client
+client/.openapi-generator
+client/.openapi-generator-ignore
+client/.travis.yml
+client/git_push.sh
+client/docs
+client/api
