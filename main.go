@@ -1,6 +1,6 @@
 package main
 
-import "CampusOnlineWebservices/proxy"
+import "github.com/TUM-Dev/CampusProxy/proxy"
 
 //go:generate swag init --parseDependency proxy/proxy.go -o docs
 
