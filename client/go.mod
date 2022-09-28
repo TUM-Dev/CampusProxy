@@ -1,4 +1,4 @@
-module github.com/GIT_USER_ID/GIT_REPO_ID/client
+module github.com/TUM-Dev/CampusProxy/client
 
 go 1.13
 
