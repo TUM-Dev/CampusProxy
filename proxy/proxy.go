@@ -1,14 +1,14 @@
 package proxy
 
 import (
-	"CampusOnlineWebservices/proxy/routes"
+	"github.com/TUM-Dev/CampusProxy/proxy/routes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
 
-	_ "CampusOnlineWebservices/docs"
+	_ "github.com/TUM-Dev/CampusProxy/docs"
 )
 
 type Proxy struct {
