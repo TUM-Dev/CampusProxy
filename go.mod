@@ -1,4 +1,4 @@
-module CampusOnlineWebservices
+module github.com/TUM-Dev/CampusProxy
 
 go 1.19
 
